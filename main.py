@@ -22,6 +22,8 @@ products = db.Table('Products', metadata,
 
 # create DB and Table products in it IN FILE
 metadata.create_all(engine)
+
+
 # ________________ DATABASE AND TABLE INSIDE CREATED________________
 
 # creating virtual data for Table
@@ -32,9 +34,11 @@ insertion_query = products.insert().values([
 
 ])
 
+
 # ______________ADD DATA TO DB _____________________
 # add data to virtual Table (in memory)
 # connection.execute(insertion_query)
+
 
 
 # ____________ GET DATA FROM DB _______________
@@ -48,13 +52,34 @@ select_all_result = connection.execute(select_all_query)
 print(select_all_result.fetchall())
 
 # get only data with price 12000
-select_price_query = db.select([products]).where(products.columns.price_per_tonne==12000)
+select_price_query = db.select([products]).where(products.columns.price_per_tonne == 12000)
 # execute query above
 select_price_result = connection.execute(select_price_query)
 result = select_price_result.fetchall()
 print(result)
 print(result[0]['product_name'])
 
-# _______________ UPDATE DATA IN DB ____________________
 
+
+# _______________ UPDATE DATA IN DB ____________________
+update_query = db.update(products).where(products.columns.supplier_name == "United_Bananas").values(
+    supplier_name='United_fruits')
+connection.execute(update_query)
+# __ GET DATA FROM DB __
+select_all_query = db.select([products])
+# execute query above
+select_all_result = connection.execute(select_all_query)
+# print all data from Tablr products
+print(select_all_result.fetchall())
+
+
+
+# _______ DELETE RECORD FROM TABLE ______________
+delete_query = db.delete(products).where(products.columns.supplier_name == "United_Tomatoes")
+
+select_all_query = db.select([products])
+# execute query above
+select_all_result = connection.execute(select_all_query)
+# print all data from Tablr products
+print(select_all_result.fetchall())
 
